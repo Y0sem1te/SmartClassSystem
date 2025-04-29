@@ -1,7 +1,7 @@
 import sys
 
 import qdarkstyle
-
+# my footprint
 from smart_classroom import SentimentDetectionApp
 from smart_classroom.behavior_detection_app import BehaviorDetectionApp
 from smart_classroom.cheating_detection_app import CheatingDetectionApp
