@@ -2,6 +2,7 @@ import sys
 
 import qdarkstyle
 # my footprint
+#我是大帅比
 from smart_classroom import SentimentDetectionApp
 from smart_classroom.behavior_detection_app import BehaviorDetectionApp
 from smart_classroom.cheating_detection_app import CheatingDetectionApp
