@@ -24,6 +24,7 @@ from utils.common import second2str, OffsetList
 import torch
 from PyQt5 import QtGui
 from utils.VideoThread import VideoThread
+from models.behavior_detectot import BehaviorDectector
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
@@ -36,7 +37,7 @@ class BehaviorDetectionApp(QWidget, Ui_BehaviorDetection):
         self.setup(self)
         self.setWindowTitle("智慧课堂“亿”点通-行为检测")
         self.timer = QtCore.QTimer()
-        self.vd_thread = VideoThread()
+        self.vd_thread = VideoThread(BehaviorDectector())
         self.vd_thread.log_signal.connect(self.log_append)
         self.vd_thread.change_pixmap.connect(self.update_image)
         self.vd_thread.photo_signal.connect(self.photoAppend)
@@ -96,7 +97,7 @@ class BehaviorDetectionApp(QWidget, Ui_BehaviorDetection):
         if self.vd_thread and self.vd_thread.isRunning():
             self.vd_thread.stop()
 
-        self.vd_thread = VideoThread(source=text)
+        self.vd_thread = VideoThread(BehaviorDectector(),source=text)
         self.vd_thread.photo_signal.connect(self.photoAppend)
         self.vd_thread.log_signal.connect(self.log_append)
         self.vd_thread.change_pixmap.connect(self.update_image)
