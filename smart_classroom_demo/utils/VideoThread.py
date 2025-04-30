@@ -18,6 +18,7 @@ class VideoThread(QtCore.QThread):
         self._running = True
         self.cap = cv2.VideoCapture(self.source)
         pre_time = datetime.now()
+        detctor = BehaviorDectector()
         while self._running and self.cap.isOpened():
             if self._paused:
                 self.msleep(100)
@@ -28,8 +29,7 @@ class VideoThread(QtCore.QThread):
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             now_time = datetime.now()
             if (now_time - pre_time).total_seconds() >= 5:
-                detctor = BehaviorDectector(rgb)
-                rgb, crops = detctor.detect()
+                rgb, crops = detctor.detect(rgb)
                 self.log_signal.emit(now_time.strftime("%Y-%m-%d %H:%M:%S"))
                 for label, crops_list in crops.items():
                     self.log_signal.emit(f"Detected {label}: {len(crops_list)} 人")

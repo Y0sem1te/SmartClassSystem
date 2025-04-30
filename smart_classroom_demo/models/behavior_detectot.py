@@ -2,16 +2,15 @@ from ultralytics import YOLO
 import supervision as sv
 
 class BehaviorDectector:
-    def __init__(self, img, pad_ratio=0.25, pad_pixels=10):
-        self.img = img
+    def __init__(self,pad_ratio=0.25, pad_pixels=10):
         self.model = YOLO("../weights/class_behavior.pt").to('cuda')
         self.pad_ratio = pad_ratio
         self.pad_pixels = pad_pixels
-    def detect(self):
-        res=self.model(self.img)[0]
-        img_cpy = self.img.copy()
+    def detect(self,img):
+        res=self.model(img)[0]
+        img_cpy = img.copy()
         detections = sv.Detections.from_ultralytics(res)
-        h_img, w_img = self.img.shape[:2]
+        h_img, w_img = img.shape[:2]
         crops = {label: [] for label in set(detections['class_name'])}
         for (x1,y1,x2,y2), cls in zip(detections.xyxy, detections['class_name']):
             x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
@@ -32,6 +31,6 @@ class BehaviorDectector:
             x2_p = min(w_img, x2_p)
             y2_p = min(h_img, y2_p)
 
-            crop = self.img[int(y1_p):int(y2_p), int(x1_p):int(x2_p)]
+            crop = img[int(y1_p):int(y2_p), int(x1_p):int(x2_p)]
             crops[cls].append(crop)
         return img_cpy, crops
