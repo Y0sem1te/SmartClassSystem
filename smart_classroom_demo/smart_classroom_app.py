@@ -2,7 +2,8 @@ import sys
 
 import qdarkstyle
 # my footprint 111
-from smart_classroom import SentimentDetectionApp
+from smart_classroom import AutoAttendenceApp, SentimentDetectionApp
+from smart_classroom.AutoAttendenceApp import AutoAttendenceApp
 from smart_classroom.behavior_detection_app import BehaviorDetectionApp
 from smart_classroom.cheating_detection_app import CheatingDetectionApp
 from smart_classroom.class_concentration_app import ClassConcentrationApp
@@ -52,7 +53,10 @@ class SmartClassroomApp(QMainWindow, SmartClassroomMainWindow):
         self.sentiment_detection_widget = SentimentDetectionApp()
         self.sentiment_detection_widget.setObjectName("sentiment_detection_widget")
         self.tabWidget.addTab(self.sentiment_detection_widget, "情感分析")
-        
+
+        self.registe_attendence_widget = AutoAttendenceApp()
+        self.registe_attendence_widget.setObjectName("registe_attendence_widget")
+        self.tabWidget.addTab(self.registe_attendence_widget, "注册考勤")
 
         self.current_tab_widget = self.tabWidget.currentWidget()
 
