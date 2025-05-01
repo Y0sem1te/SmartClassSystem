@@ -34,6 +34,7 @@ class VideoThread(QtCore.QThread):
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             now_time = datetime.now()
             # if (now_time - pre_time).total_seconds() >= 5:
+                
             #     rgb, crops = self.detector.detect(rgb)
             #     self.log_signal.emit(now_time.strftime("%Y-%m-%d %H:%M:%S"))
             #     for label, crops_list in crops.items():

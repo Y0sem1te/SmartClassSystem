@@ -51,7 +51,7 @@ class SentimentModule(BaseModule):
         data.detections = torch.rand((1,6))
         data.keypoints = torch.rand((1, 136, 1))
         data.keypoints_scores =torch.ones((1,136,2))
-        return TASK_DATA_OK
+        return outputs
 
     def preprocess(self, frame):
         train_tfm = transforms.Compose([
