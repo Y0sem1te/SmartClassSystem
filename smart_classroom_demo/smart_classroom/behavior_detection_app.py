@@ -1,31 +1,13 @@
-import csv
 import os
-import time
-from itertools import islice
-from threading import Thread, Lock
-import cv2
 import cv2
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel
-from PyQt5.QtGui import QImage, QPixmap
 import matplotlib.pyplot as plt
-import numpy as np
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QWidget
-from matplotlib import ticker
-from pipeline_module.classroom_action_module import CheatingActionModule
-from pipeline_module.core.task_solution import TaskSolution
-from pipeline_module.pose_modules import AlphaPoseModule
-from pipeline_module.video_modules import VideoModule
-from pipeline_module.vis_modules import CheatingDetectionVisModule
-from pipeline_module.yolo_modules import YoloV5Module
-from smart_classroom.list_items import VideoSourceItem, RealTimeCatchItem, FrameData
 from ui.behavior_detection import Ui_BehaviorDetection
 from ui.behavior_detection_item import RecordWidget
-from ui.cheating_detection import Ui_CheatingDetection
-from utils.common import second2str, OffsetList
 import torch
-from PyQt5 import QtGui
 from utils.VideoThread import VideoThread
 from models.behavior_detectot import BehaviorDectector
 plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -76,7 +58,6 @@ class BehaviorDetectionApp(QWidget, Ui_BehaviorDetection):
         bboxes: list[tuple] 对应框坐标列表
         label: str 行为标签
         """
-        # 生成缩略图 QPixmap 列表
         pm_list = [self.numpy_to_pixmap(c) for c in crops]
         # 创建 RecordWidget，并传入 full_frame
         record = RecordWidget(label, pm_list, bboxes, full_frame, self.photoContainer)
@@ -94,14 +75,12 @@ class BehaviorDetectionApp(QWidget, Ui_BehaviorDetection):
         frame_copy = full_frame.copy()
         cv2.rectangle(frame_copy, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-        # 转为 QPixmap
         rgb = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb.shape
         bytes_per_line = ch * w
         qimg = QImage(rgb.data.tobytes(), w, h, bytes_per_line, QImage.Format_RGB888)
         pix = QPixmap.fromImage(qimg)
 
-        # 构建对话框
         dlg = QDialog(self)
         dlg.setWindowTitle("行为截图查看")
         layout = QVBoxLayout(dlg)

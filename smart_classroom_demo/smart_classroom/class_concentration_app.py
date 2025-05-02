@@ -18,8 +18,8 @@ from pipeline_module.core.base_module import DictData
 from ui.class_concentration import Ui_ClassConcentration
 #from ui.UI import Ui_ClassConcentration
 
-plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
-plt.rcParams['axes.unicode_minus'] = False  # 这两行需要手动设置
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
 
 from pipeline_module.classroom_action_module import ConcentrationEvaluationModule
 from pipeline_module.core.task_solution import TaskSolution

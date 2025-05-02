@@ -1,15 +1,11 @@
 import sys
 
 import qdarkstyle
-# my footprint 111
 from smart_classroom import AutoAttendenceApp, SentimentDetectionApp
 from smart_classroom.AutoAttendenceApp import AutoAttendenceApp
 from smart_classroom.behavior_detection_app import BehaviorDetectionApp
-from smart_classroom.cheating_detection_app import CheatingDetectionApp
 from smart_classroom.class_concentration_app import ClassConcentrationApp
-from smart_classroom.dynamic_attendance_app import DynamicAttendanceApp
-from smart_classroom.face_register_app import FaceRegisterApp
-from smart_classroom.SentimentDetectionApp import SentimentDetectionApp  # 确保导入路径正确
+from smart_classroom.SentimentDetectionApp import SentimentDetectionApp
 
 try:
     import smart_classroom_rc
@@ -30,9 +26,6 @@ class SmartClassroomApp(QMainWindow, SmartClassroomMainWindow):
     def __init__(self, parent=None):
         super(SmartClassroomApp, self).__init__(parent)
         self.setupUi(self)
-        # self.cheating_detection_widget = CheatingDetectionApp()
-        # self.cheating_detection_widget.setObjectName("cheating_detection_widget")
-        # self.tabWidget.addTab(self.cheating_detection_widget, "作弊检测")
 
         self.behavior_detection_widget = BehaviorDetectionApp()
         self.behavior_detection_widget.setObjectName("behavior_detection_widget")
@@ -41,14 +34,6 @@ class SmartClassroomApp(QMainWindow, SmartClassroomMainWindow):
         self.class_concentration_widget = ClassConcentrationApp()
         self.class_concentration_widget.setObjectName("class_concentration_widget")
         self.tabWidget.addTab(self.class_concentration_widget, "课堂专注度分析")
-
-        # self.face_register_widget = FaceRegisterApp()
-        # self.face_register_widget.setObjectName("face_register_widget")
-        # self.tabWidget.addTab(self.face_register_widget, "人脸注册")
-
-        # self.dynamic_attendance_widget = DynamicAttendanceApp()
-        # self.dynamic_attendance_widget.setObjectName("dynamic_attendance_widget")
-        # self.tabWidget.addTab(self.dynamic_attendance_widget, "动态点名")
 
         self.sentiment_detection_widget = SentimentDetectionApp()
         self.sentiment_detection_widget.setObjectName("sentiment_detection_widget")
@@ -67,13 +52,6 @@ class SmartClassroomApp(QMainWindow, SmartClassroomMainWindow):
             self.current_tab_widget.open()
 
         self.tabWidget.currentChanged.connect(current_tab_change)
-        # def change_tab_widget(index):
-        #     self.tabWidget.widget(index).close()
-        #
-        # self.tabWidget.currentChanged.connect()
-        # _translate = QtCore.QCoreApplication.translate
-        # self.tabWidget.setTabText(self.tabWidget.indexOf(self.cheating_detection_widget),
-        #                           _translate("MainWindow", "作弊检测"))
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.cheating_detection_widget.close()

@@ -9,7 +9,6 @@ from PyQt5.QtWidgets import QListWidgetItem, QWidget, QListWidget, QInputDialog,
 
 from ui.attendance_item import Ui_AttendanceItem
 from ui.cheating_list_item import Ui_CheatingListItem
-from ui.sentiment_list_item import Ui_SentimentListItem
 from ui.face_list_item import Ui_FaceListItem
 from ui.real_time_catch import Ui_RealTimeCatch
 from utils.common import second2str, validFileName

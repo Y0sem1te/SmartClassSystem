@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtGui
 import cv2
-from models.behavior_detectot import BehaviorDectector
 from datetime import datetime
 
 class VideoThread(QtCore.QThread):
@@ -17,7 +16,6 @@ class VideoThread(QtCore.QThread):
         self._paused = False
         self.source = source
         self.cap = None
-        # self.detector = BehaviorDectector()
         self.detector = detector
 
     def run(self):
@@ -33,26 +31,6 @@ class VideoThread(QtCore.QThread):
                 break
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             now_time = datetime.now()
-            # if (now_time - pre_time).total_seconds() >= 5:
-                
-            #     rgb, crops = self.detector.detect(rgb)
-            #     self.log_signal.emit(now_time.strftime("%Y-%m-%d %H:%M:%S"))
-            #     for label, crops_list in crops.items():
-            #         self.log_signal.emit(f"Detected {label}: {len(crops_list)} 人")
-            #         if label in ["Using_phone", "sleep"]:
-            #             self.photo_signal.emit(frame, crops_list, label)
-            #     self.log_signal.emit("")
-                
-            #     pre_time = now_time
-            # if (now_time - pre_time).total_seconds() >= 5:
-            #     rgb_detect, crops, bboxes, labels = self.detector.detect(rgb)
-            #     self.log_signal.emit(now_time.strftime("%Y-%m-%d %H:%M:%S"))
-            #     for crop, bbox, label in zip(crops, bboxes, labels):
-            #         self.log_signal.emit(f"Detected {label}")
-            #         if label in ["Using_phone", "sleep","turn_head"]:
-            #             self.photo_signal.emit(frame.copy(), crops, bboxes, label)
-            #     self.log_signal.emit("")
-            #     pre_time = now_time````````````````````````
             if (now_time - pre_time).total_seconds() >= 5:
                 full_frame = frame.copy()
                 rgb_detect, crops, bboxes, labels = self.detector.detect(rgb)
