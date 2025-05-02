@@ -29,14 +29,11 @@ class SentimentThread(QtCore.QThread):
                 break
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             now_time = datetime.now()
-            
+            sentiment_dict,rgb = self.detector.detect(rgb)
             if (now_time - pre_time).total_seconds() >= 2:
-                sentiment_dict = self.detector.detect(rgb)
                 self.log_signal.emit(now_time.strftime("%Y-%m-%d %H:%M:%S"))
                 for sentiment, number in sentiment_dict.items():
                     self.log_signal.emit(f"Detected {sentiment}: {number} 人")
-                    # if label in ["Using_phone", "sleep"]:
-                    #     self.photo_signal.emit(frame, crops_list, label)
                 self.log_signal.emit("")
                 self.result_signal.emit(sentiment_dict)            # turn0search0
                 pre_time = now_time

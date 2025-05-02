@@ -61,7 +61,7 @@ class Ui_AutoAttendence(object):
         label2.setFont(QtGui.QFont("Arial", 12))
         label2.setStyleSheet("color: white;")
         self.des_text_horlay.addWidget(label2)
-        label3 = QtWidgets.QLabel("已签到名单")
+        label3 = QtWidgets.QLabel("未签到名单")
         label3.setFont(QtGui.QFont("Arial", 12))
         label3.setStyleSheet("color: white;")
         self.des_text_horlay.addWidget(label3)

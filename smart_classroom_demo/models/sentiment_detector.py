@@ -5,6 +5,7 @@ from torchvision import transforms
 import numpy as np
 from PIL import Image
 from face_recog.models.face_boxes_location import FaceBoxesLocation
+import cv2
 class SentimentDetector:
     def __init__(self):
         self.model = resnet101(pretrained=False).to('cuda')
@@ -23,12 +24,15 @@ class SentimentDetector:
     def detect(self,img):
         face_locations = self.face_detection.face_location(img)
         sentiment_number={}
+        img_copy = img.copy()
         for x1,y1,x2,y2 in face_locations:
             face_crop = img[int(y1):int(y2),int(x1):int(x2)]
+            cv2.rectangle(img_copy, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
             face_crop = Image.fromarray(face_crop)
             res=self.model(self.tfm(face_crop).unsqueeze(0).to('cuda'))
             output = res.argmax(dim=1).item()
+            cv2.putText(img_copy, str(self.sentiment[output]), (int(x1), int(y1)-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             sentiment_number[self.sentiment[output]] = sentiment_number.get(self.sentiment[output], 0) + 1
-        return sentiment_number
+        return sentiment_number,img_copy
 
         
