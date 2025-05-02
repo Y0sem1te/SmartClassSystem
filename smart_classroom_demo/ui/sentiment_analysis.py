@@ -62,19 +62,39 @@ class Ui_SentimentDetection(object):
         self.line_frame = QtWidgets.QFrame(SentimentDetection)
         self.line_frame.setStyleSheet("background-color: #2E2E2E;")
         self.line_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.res_verlay.addWidget(self.line_frame, 4)
+        self.res_verlay.addWidget(self.line_frame, 3)
         self.line_frame.setLayout(QtWidgets.QVBoxLayout())
         self.line_plot = QtWidgets.QLabel(self.line_frame)
+        self.line_plot.setMinimumSize(QtCore.QSize(750, 250))  # 设置最小尺寸
+        self.line_plot.setScaledContents(False)
+        self.line_plot.setSizePolicy(
+            QtWidgets.QSizePolicy.Expanding,
+            QtWidgets.QSizePolicy.Expanding
+        )
+        self.line_plot.setAlignment(QtCore.Qt.AlignCenter)
+        self.line_frame.layout().addWidget(self.line_plot)
         self.line_plot.setStyleSheet("background-color: #2E2E2E;")
 
         # 2.3 饼状图
         self.bing_frame = QtWidgets.QFrame(SentimentDetection)
         self.bing_frame.setStyleSheet("background-color: #2E2E2E;")
         self.bing_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.res_verlay.addWidget(self.bing_frame, 5)
+        self.res_verlay.addWidget(self.bing_frame, 6)
         self.bing_frame.setLayout(QtWidgets.QVBoxLayout())
         self.bing_plot = QtWidgets.QLabel(self.bing_frame)
+        self.bing_plot.setMinimumSize(QtCore.QSize(750, 350))  # 设置最小尺寸
         self.bing_plot.setStyleSheet("background-color: #2E2E2E;")
+
+        # self.bing_plot.setScaledContents(True)
+        # self.bing_plot.setAlignment(QtCore.Qt.AlignCenter)
+        self.bing_plot.setScaledContents(False)
+        # 水平和垂直都可扩展
+        self.bing_plot.setSizePolicy(
+            QtWidgets.QSizePolicy.Expanding,
+            QtWidgets.QSizePolicy.Expanding
+        )
+        # QLabel 内部内容居中
+        self.bing_plot.setAlignment(QtCore.Qt.AlignCenter)
 
         self.main_horlay.addLayout(self.res_verlay, 5)
         self.tot_verlay.addLayout(self.main_horlay)

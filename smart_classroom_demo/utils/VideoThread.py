@@ -52,7 +52,7 @@ class VideoThread(QtCore.QThread):
             #         if label in ["Using_phone", "sleep","turn_head"]:
             #             self.photo_signal.emit(frame.copy(), crops, bboxes, label)
             #     self.log_signal.emit("")
-            #     pre_time = now_time
+            #     pre_time = now_time````````````````````````
             if (now_time - pre_time).total_seconds() >= 5:
                 full_frame = frame.copy()
                 rgb_detect, crops, bboxes, labels = self.detector.detect(rgb)

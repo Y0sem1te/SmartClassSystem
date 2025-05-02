@@ -1,17 +1,20 @@
 from PyQt5 import QtCore, QtGui
 import cv2
-from models.behavior_detectot import BehaviorDectector
+from models.sentiment_detector import SentimentDetector
 from datetime import datetime
 
 
 class SentimentThread(QtCore.QThread):
     change_pixmap = QtCore.pyqtSignal(QtGui.QPixmap)
+    log_signal    = QtCore.pyqtSignal(str)     # 用于传日志文本 :contentReference[oaicite:6]{index=6}
+    result_signal = QtCore.pyqtSignal(dict)    # 用于传情绪统计字典
     def __init__(self,source=0):
         super().__init__()
         self._running = False
         self._paused = False
         self.source = source
         self.cap = None
+        self.detector = SentimentDetector()
 
     def run(self):
         self._running = True
@@ -28,13 +31,14 @@ class SentimentThread(QtCore.QThread):
             now_time = datetime.now()
             
             if (now_time - pre_time).total_seconds() >= 2:
-                # rgb, crops = self.detector.detect(rgb)
-                # self.log_signal.emit(now_time.strftime("%Y-%m-%d %H:%M:%S"))
-                # for label, crops_list in crops.items():
-                #     self.log_signal.emit(f"Detected {label}: {len(crops_list)} 人")
-                #     if label in ["Using_phone", "sleep"]:
-                #         self.photo_signal.emit(frame, crops_list, label)
-                # self.log_signal.emit("")
+                sentiment_dict = self.detector.detect(rgb)
+                self.log_signal.emit(now_time.strftime("%Y-%m-%d %H:%M:%S"))
+                for sentiment, number in sentiment_dict.items():
+                    self.log_signal.emit(f"Detected {sentiment}: {number} 人")
+                    # if label in ["Using_phone", "sleep"]:
+                    #     self.photo_signal.emit(frame, crops_list, label)
+                self.log_signal.emit("")
+                self.result_signal.emit(sentiment_dict)            # turn0search0
                 pre_time = now_time
             h, w, ch = rgb.shape
             bytes_per_line = ch * w
