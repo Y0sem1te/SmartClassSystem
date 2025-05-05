@@ -8,6 +8,7 @@ class SentimentThread(QtCore.QThread):
     change_pixmap = QtCore.pyqtSignal(QtGui.QPixmap)
     log_signal    = QtCore.pyqtSignal(str)     # 用于传日志文本 :contentReference[oaicite:6]{index=6}
     result_signal = QtCore.pyqtSignal(dict)    # 用于传情绪统计字典
+    source_change = QtCore.pyqtSignal(str)
     def __init__(self,source=0):
         super().__init__()
         self._running = False
@@ -16,8 +17,13 @@ class SentimentThread(QtCore.QThread):
         self.cap = None
         self.detector = SentimentDetector()
 
+    def deal(self, source):
+        self.source = source
+
     def run(self):
         self._running = True
+        if self.source == "":
+            self.source=int(0)
         self.cap = cv2.VideoCapture(self.source)
         pre_time = datetime.now()
         while self._running and self.cap.isOpened():

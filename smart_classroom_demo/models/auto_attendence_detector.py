@@ -40,9 +40,10 @@ class AttendenceDetector:
 
     def register(self,img,id,name):
         # —— 改为：返回（是否成功, 提示信息）
-        locs = self.face_detection.face_location(img)[0]
+        locs = self.face_detection.face_location(img)
         if not len(locs):
             return False, "未检测到人脸，请重试。"
+        locs = self.face_detection.face_location(img)[0]
         x1,y1,x2,y2 = locs
         enc = face_recog.face_encodings(img, [locs])[0]
         folder = os.path.join(self.face_bank_dir, str(id))

@@ -48,6 +48,11 @@ class AutoAttendenceApp(QWidget, Ui_AutoAttendence):
     def handle_register(self):
         cap = cv2.VideoCapture(0)
         ret, frame = cap.read()
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb_frame.shape
+        bytes_per_line = ch * w
+        qimg = QtGui.QImage(rgb_frame.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
+        self.videoContainer.setPixmap(QtGui.QPixmap.fromImage(qimg))
         cap.release()
         if not ret:
             QMessageBox.warning(self, "错误", "无法获取摄像头画面，请检查设备。")

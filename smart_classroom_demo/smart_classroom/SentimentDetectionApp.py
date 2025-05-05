@@ -22,8 +22,8 @@ class SentimentDetectionApp(QWidget, Ui_SentimentAnalysis):
         self.emotion_history = []
         self.time_history = []
         self.max_history_length = 20  # 最多保存20个历史点
-
-        self.thread = SentimentThread(source=0)
+        self.source = 0
+        self.thread = SentimentThread(self.source)
         # 视频帧更新
         self.thread.change_pixmap.connect(self.update_video_frame)
         # 日志与饼图信号
@@ -31,9 +31,18 @@ class SentimentDetectionApp(QWidget, Ui_SentimentAnalysis):
         self.thread.result_signal.connect(self.update_charts)
 
         # 绑定按钮
-        self.btnPlay.clicked.connect(self.thread.start)
+        # self.btnPlay.clicked.connect(self.thread.start)
+        self.thread.source_change.connect(self.thread.deal)
+        self.btnPlay.clicked.connect(self.video_start)
         self.btnPause.clicked.connect(self.thread.pause)
         self.btnStop.clicked.connect(self.thread.resume)
+
+    def video_start(self):
+        if hasattr(self, 'thread') and self.thread.isRunning():
+            self.thread.stop()
+        self.thread.source_change.emit(self.lineEditSource.text())
+        self.thread.start()
+
 
     def update_video_frame(self, pixmap: QPixmap):
         """将线程中发过来的视频帧显示在 QLabel 上"""  
@@ -114,7 +123,7 @@ class SentimentDetectionApp(QWidget, Ui_SentimentAnalysis):
         fig.canvas.draw()
         
 
-        buf = fig.canvas.tostring_rgb()
+        buf = fig.canvas.buffer_rgba()
         w, h = fig.canvas.get_width_height()
         qimg = QImage(buf, w, h, w * 3, QImage.Format_RGB888)
         
@@ -196,7 +205,7 @@ class SentimentDetectionApp(QWidget, Ui_SentimentAnalysis):
         fig.canvas.draw()
         
         # 转换为QPixmap
-        buf = fig.canvas.tostring_rgb()
+        buf = fig.canvas.buffer_rgba()
         w, h = fig.canvas.get_width_height()
         qimg = QImage(buf, w, h, w * 3, QImage.Format_RGB888)
         
